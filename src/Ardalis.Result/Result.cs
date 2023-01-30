@@ -48,7 +48,7 @@ namespace Ardalis.Result
 
         public Type ValueType { get; private set; }
         public ResultStatus Status { get; protected set; } = ResultStatus.Ok;
-        public bool IsSuccess => Status == ResultStatus.Ok;
+        public bool IsSuccess => Status == ResultStatus.Ok || Status == ResultStatus.Created || Status == ResultStatus.NoContent;
         public string SuccessMessage { get; protected set; } = string.Empty;
         public IEnumerable<string> Errors { get; protected set; } = new List<string>();
         public List<ValidationError> ValidationErrors { get; protected set; } = new List<ValidationError>();

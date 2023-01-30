@@ -26,6 +26,8 @@ namespace Ardalis.Result
                 case ResultStatus.Forbidden: return Result<TDestination>.Forbidden();
                 case ResultStatus.Invalid: return Result<TDestination>.Invalid(result.ValidationErrors);
                 case ResultStatus.Error: return Result<TDestination>.Error(result.Errors.ToArray());
+                case ResultStatus.Created: return func(result);
+                case ResultStatus.NoContent: return func(result);
                 default:
                     throw new NotSupportedException($"Result {result.Status} conversion is not supported.");
             }

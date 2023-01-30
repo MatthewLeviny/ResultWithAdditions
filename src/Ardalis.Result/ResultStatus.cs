@@ -7,6 +7,8 @@
         Forbidden,
         Unauthorized,
         Invalid,
-        NotFound
+        NotFound,
+        Created,
+        NoContent
     }
 }

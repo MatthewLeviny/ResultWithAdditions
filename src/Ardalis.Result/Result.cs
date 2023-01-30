@@ -26,6 +26,13 @@ namespace Ardalis.Result
             Status = status;
         }
 
+
+        protected Result(ResultStatus status, T value)
+        {
+            Value = value;
+            Status = status;
+        }
+
         public static implicit operator T(Result<T> result) => result.Value;
         public static implicit operator Result<T>(T value) => new Result<T>(value);
 
@@ -116,6 +123,25 @@ namespace Ardalis.Result
         public static Result<T> Invalid(List<ValidationError> validationErrors)
         {
             return new Result<T>(ResultStatus.Invalid) { ValidationErrors = validationErrors };
+        }
+
+        /// <summary>
+        /// Represents the situation where a service was unable to find a requested content.
+        /// </summary>
+        /// <returns>A Result<typeparamref name="T"/></returns>
+        public static Result<T> NoContent()
+        {
+            return new Result<T>(ResultStatus.NoContent);
+        }
+
+
+        /// <summary>
+        /// Represents a Created operation and accepts a values as the result of the operation
+        /// </summary>
+        /// <returns>A Result<typeparamref name="T"/></returns>
+        public static Result<T> Created(T value)
+        {
+            return new Result<T>(ResultStatus.Created, value);
         }
 
         /// <summary>

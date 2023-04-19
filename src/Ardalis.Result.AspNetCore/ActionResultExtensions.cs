@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ardalis.Result.AspNetCore
@@ -62,14 +63,18 @@ namespace Ardalis.Result.AspNetCore
         {
             switch (result.Status)
             {
-                case ResultStatus.Ok: return typeof(Result).IsInstanceOfType(result)
-                        ? (ActionResult)controller.Ok() 
+                case ResultStatus.Ok:
+                    return typeof(Result).IsInstanceOfType(result)
+                        ? (ActionResult)controller.Ok()
                         : controller.Ok(result.GetValue());
                 case ResultStatus.NotFound: return NotFoundEntity(controller, result);
                 case ResultStatus.Unauthorized: return controller.Unauthorized();
                 case ResultStatus.Forbidden: return controller.Forbid();
                 case ResultStatus.Invalid: return BadRequest(controller, result);
                 case ResultStatus.Error: return UnprocessableEntity(controller, result);
+                case ResultStatus.NoContent: return controller.NoContent();
+                case ResultStatus.Created:
+                    return new ObjectResult(result.GetValue()) { StatusCode = StatusCodes.Status201Created };
                 default:
                     throw new NotSupportedException($"Result {result.Status} conversion is not supported.");
             }
